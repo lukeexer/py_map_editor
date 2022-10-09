@@ -44,7 +44,8 @@ class MapEditor(tk.Tk):
         elif self._panel_variables['current_mouse_mode'] == Const.MouseMode.PATH_ADD.value:
             print('Mode: path add.')
         elif self._panel_variables['current_mouse_mode'] == Const.MouseMode.SELECT.value:
-            print('Mode: select.')
+            selected_tag_name = self._canvas.get_selected_tags()
+            print(f'Selected point tag name: {selected_tag_name}')
         elif self._panel_variables['current_mouse_mode'] == Const.MouseMode.DELETE.value:
             print('Mode: delete.')
         else:

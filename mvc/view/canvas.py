@@ -14,6 +14,10 @@ class MapCanvas(tk.Frame):
         self._canvas.bind("<Button-1>", callbacks['canvas_click'])
         self._canvas.pack()
 
+    def get_selected_tags(self):
+        '''Get the current selected tag name.'''
+        return self._canvas.gettags("current")
+
     def paint(self, map_data):
         '''Update canvas content.'''
 
@@ -25,4 +29,5 @@ class MapCanvas(tk.Frame):
             x_2, y_2 = (point.x + Const.DEFAULT_POINT_RADIUS), \
                 (point.y + Const.DEFAULT_POINT_RADIUS)
 
-            self._canvas.create_oval(x_1, y_1, x_2, y_2, fill=Const.DEFAULT_DELIVERY_POINT_COLOR)
+            self._canvas.create_oval(x_1, y_1, x_2, y_2,
+                fill=Const.DEFAULT_DELIVERY_POINT_COLOR, tags=point.point_id)
