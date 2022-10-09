@@ -8,7 +8,6 @@ from mvc.view.panel import EditorPanel
 from mvc.view.canvas import MapCanvas
 
 import mvc.constants as Const
-from mvc.view.panel import EditorPanel
 
 class MapEditor(tk.Tk):
     '''Controller class.'''
@@ -40,18 +39,26 @@ class MapEditor(tk.Tk):
         '''Canvas mouse click callback function.'''
 
         if self._panel_variables['current_mouse_mode'] == Const.MouseMode.POINT_ADD.value:
-            self._point_add(event.x, event.y)
+            self._add_point(event.x, event.y)
         elif self._panel_variables['current_mouse_mode'] == Const.MouseMode.PATH_ADD.value:
             print('Mode: path add.')
         elif self._panel_variables['current_mouse_mode'] == Const.MouseMode.SELECT.value:
             selected_tag_name = self._canvas.get_selected_tags()
             print(f'Selected point tag name: {selected_tag_name}')
         elif self._panel_variables['current_mouse_mode'] == Const.MouseMode.DELETE.value:
-            print('Mode: delete.')
+            selected_object = self._canvas.get_selected_tags()
+            if selected_object:
+                target_point_id, _ = selected_object
+                self._delete_point(target_point_id)
         else:
             print('Mode: default')
 
-    def _point_add(self, x, y):
+    def _delete_point(self, target_point_id):
+        '''Delete point from canvas.'''
+        self._map.remove_point(int(target_point_id))
+        self._canvas.paint(self._map)
+
+    def _add_point(self, x, y):
         '''Add point to canvas.'''
 
         point = Point(self._map.generate_new_point_id(),

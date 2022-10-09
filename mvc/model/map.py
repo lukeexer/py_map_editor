@@ -35,11 +35,10 @@ class Map():
 
         self.points.append(point)
 
-    def remove_point(self, target_point):
+    def remove_point(self, target_point_id):
         '''Remove point from map.'''
-
         for i, point in enumerate(self.points):
-            if target_point.id == point.id:
+            if target_point_id == point.point_id:
                 del self.points[i]
                 break
 
