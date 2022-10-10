@@ -12,7 +12,10 @@ DEFAULT_PARKING_POINT_COLOR = 'blue'
 DEFAULT_PATH_POINT_COLOR = 'green'
 DEFAULT_NON_FOLLOW_POINT_COLOR = 'yellow'
 
+DEFAULT_PATH_COLOR = 'white'
+
 DEFAULT_POINT_RADIUS = 10
+DEFAULT_Path_WIDTH = 5
 
 class MouseMode(Enum):
     '''Map editor selected mouse mode.'''

@@ -10,7 +10,7 @@ class Map():
 
     def __init__(self):
         self.points = []
-        self.path = []
+        self.paths = []
         self._max_point_id = Const.DEFAULT_MIN_POINT_ID
         self._max_path_id = Const.DEFAULT_MIN_PATH_ID
 
@@ -41,6 +41,25 @@ class Map():
             if target_point_id == point.point_id:
                 del self.points[i]
                 break
+
+    def add_path(self, start_point_id, end_point_id):
+        '''Add new path to map.'''
+        start_point = None
+        end_point = None
+
+        for point in self.points:
+            if start_point_id == point.point_id:
+                start_point = point
+                break
+
+        for point in self.points:
+            if end_point_id == point.point_id:
+                end_point = point
+                break
+
+        new_path_id = self.generate_new_path_id()
+        new_path = Path(new_path_id, start_point, end_point, PathType.DIRECT.value)
+        self.paths.append(new_path)
 
 class PointType(Enum):
     '''Point type enumeration definition.'''

@@ -16,6 +16,8 @@ class EditorPanel(tk.Frame):
 
         save_btn = ttk.Button(self, text='Save')
         load_btn = ttk.Button(self, text='Load')
+        save_btn = ttk.Button(self, text='Redo')
+        load_btn = ttk.Button(self, text='Undo')
         add_point_btn = ttk.Button(self, text='Add Point',
             command=lambda mode=Const.MouseMode.POINT_ADD.value: self._on_mode_change(mode))
         add_path_btn = ttk.Button(self, text='Add Path',

@@ -21,6 +21,10 @@ class MapEditor(tk.Tk):
 
         self._map = Map()
 
+        # Initialize selected start and end point ID for drawing path.
+        self._add_path_start_point_id = None
+        self._add_path_end_point_id = None
+
         self._panel_variables = {}
         self._panel_variables['current_mouse_mode'] = Const.MouseMode.POINT_ADD
 
@@ -41,15 +45,29 @@ class MapEditor(tk.Tk):
         if self._panel_variables['current_mouse_mode'] == Const.MouseMode.POINT_ADD.value:
             self._add_point(event.x, event.y)
         elif self._panel_variables['current_mouse_mode'] == Const.MouseMode.PATH_ADD.value:
-            print('Mode: path add.')
+            selected_object = self._canvas.get_selected_tags()
+            print(selected_object)
+            if selected_object:
+                try:
+                    target_point_id, _ = selected_object
+                    self._add_path(target_point_id)
+                except ValueError:
+                    # Ignore duplicate selection on the same point twice.
+                    self._add_path_start_point_id = None
+                    self._add_path_end_point_id = None
         elif self._panel_variables['current_mouse_mode'] == Const.MouseMode.SELECT.value:
             selected_tag_name = self._canvas.get_selected_tags()
             print(f'Selected point tag name: {selected_tag_name}')
         elif self._panel_variables['current_mouse_mode'] == Const.MouseMode.DELETE.value:
             selected_object = self._canvas.get_selected_tags()
+            print(selected_object)
             if selected_object:
-                target_point_id, _ = selected_object
-                self._delete_point(target_point_id)
+                try:
+                    target_point_id, _ = selected_object
+                    self._delete_point(target_point_id)
+                except ValueError:
+                    # Ignore duplicate selection on the same point twice.
+                    pass
         else:
             print('Mode: default')
 
@@ -60,10 +78,23 @@ class MapEditor(tk.Tk):
 
     def _add_point(self, x, y):
         '''Add point to canvas.'''
-
         point = Point(self._map.generate_new_point_id(),
             x, y, PointType.PATH_POINT.value)
-
         self._map.add_point(point)
-
         self._canvas.paint(self._map)
+
+    def _add_path(self, target_point_id):
+        '''Add path to canvas.'''
+        if self._add_path_start_point_id is None:
+            self._add_path_start_point_id = target_point_id
+        else:
+            self._add_path_end_point_id = target_point_id
+
+            if not self._add_path_start_point_id == self._add_path_end_point_id:
+                self._map.add_path(int(self._add_path_start_point_id),
+                    int(self._add_path_end_point_id))
+
+                self._canvas.paint(self._map)
+
+            self._add_path_start_point_id = None
+            self._add_path_end_point_id = None

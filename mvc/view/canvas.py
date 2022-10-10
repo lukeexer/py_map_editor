@@ -31,3 +31,12 @@ class MapCanvas(tk.Frame):
 
             self._canvas.create_oval(x_1, y_1, x_2, y_2,
                 fill=Const.DEFAULT_DELIVERY_POINT_COLOR, tags=point.point_id)
+
+        for path in map_data.paths:
+            x_1 = path.start_point.x
+            y_1 = path.start_point.y
+            x_2 = path.end_point.x
+            y_2 = path.end_point.y
+
+            self._canvas.create_line(x_1, y_1, x_2, y_2, fill=Const.DEFAULT_PATH_COLOR,
+                width=Const.DEFAULT_Path_WIDTH)
