@@ -57,10 +57,17 @@ class MapEditor(tk.Tk):
                     self._add_path_start_point_id = None
                     self._add_path_end_point_id = None
         elif self._panel_variables['current_mouse_mode'] == Const.MouseMode.SELECT.value:
-            selected_tag_name = self._canvas.get_selected_tags()
-            dlg = PointSelectedDialog(parent=self, point_id=selected_tag_name)
-            print(dlg.dialog_return_value)
-            print(f'Selected point tag name: {selected_tag_name}')
+            selected_object = self._canvas.get_selected_tags()
+            if selected_object:
+                try:
+                    target_point_id, _ = selected_object
+                    point = self._map.get_point(int(target_point_id))
+                    dlg = PointSelectedDialog(parent=self, point=point)
+                    print(dlg.updated_point.point_id)
+                    print(dlg.updated_point.point_type)
+                    self._map.update_point(int(target_point_id), dlg.updated_point)
+                except ValueError:
+                    pass
         elif self._panel_variables['current_mouse_mode'] == Const.MouseMode.DELETE.value:
             selected_object = self._canvas.get_selected_tags()
             print(selected_object)

@@ -3,6 +3,8 @@
 
 from enum import Enum
 
+from mvc.exception import PointNotFound
+
 import mvc.constants as Const
 
 class Map():
@@ -41,6 +43,27 @@ class Map():
             if target_point_id == point.point_id:
                 del self.points[i]
                 break
+
+    def update_point(self, old_point_id, point):
+        '''Update point info. by old point ID.'''
+
+        self.remove_point(old_point_id)
+        self.add_point(point)
+
+    def get_point(self, point_id):
+        '''Get point by point ID.'''
+
+        ret = None
+
+        for point in self.points:
+            if point_id == point.point_id:
+                ret = point
+                break
+
+        if ret is None:
+            raise PointNotFound(f'Can not find point with ID: {point_id}')
+
+        return ret
 
     def add_path(self, start_point_id, end_point_id):
         '''Add new path to map.'''

@@ -6,35 +6,32 @@ from tkinter import simpledialog
 class PointSelectedDialog(tk.simpledialog.Dialog):
     '''Dialog class showed when a specific point is selected.'''
 
-    def __init__(self, parent, point_id):
-        self.my_username = None
-        self.my_password = None
-        self._point_id = point_id
-        self.dialog_return_value = None # Dialog return value.
+    def __init__(self, parent, point):
+        self._point = point
+        self.updated_point = None # Dialog return value.
         super().__init__(parent, 'Edit Point')
 
     def body(self, master):
-        self._selected_point_id_label = tk.Label(master, width=25, text=self._point_id)
-        self._selected_point_id_label.pack()
-        self.my_username_label = tk.Label(master, width=25, text="Username")
-        self.my_username_label.pack()
-        self.my_username_box = tk.Entry(master, width=25)
-        self.my_username_box.pack()
+        point_id_label = tk.Label(master, text='Point ID:')
+        point_id_label.grid(row=0, column=0)
+        self._point_id_entry = tk.Entry(master)
+        self._point_id_entry.insert(0, str(self._point.point_id))
+        self._point_id_entry.grid(row=0, column=1)
 
-        self.my_password_label = tk.Label(master, width=25, text="Password")
-        self.my_password_label.pack()
-        self.my_password_box = tk.Entry(master, width=25)
-        self.my_password_box.pack()
-        self.my_password_box['show'] = '*'
+        point_type_label = tk.Label(master, text="Point Type:")
+        point_type_label.grid(row=1, column=0)
+        self._point_type_entry = tk.Entry(master)
+        self._point_type_entry.insert(0, str(self._point.point_type))
+        self._point_type_entry.grid(row=1, column=1)
 
         return master
 
     def ok_pressed(self):
         '''Event when gialog ok button pressed.'''
         #print("ok")
-        self.my_username = self.my_username_box.get()
-        self.my_password = self.my_password_box.get()
-        self.dialog_return_value = 'return value from dialog.'
+        self._point.point_id = self._point_id_entry.get()
+        self._point.point_type = self._point_type_entry.get()
+        self.updated_point = self._point  # Dialog return value.
         self.destroy()
 
     def cancel_pressed(self):
