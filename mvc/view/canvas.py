@@ -30,7 +30,7 @@ class MapCanvas(tk.Frame):
             y_2 = path.end_point.y
 
             self._canvas.create_line(x_1, y_1, x_2, y_2, fill=Const.DEFAULT_PATH_COLOR,
-                width=Const.DEFAULT_Path_WIDTH)
+                width=Const.DEFAULT_PATH_WIDTH)
 
         for point in map_data.points:
             x_1, y_1 = (point.x - Const.DEFAULT_POINT_RADIUS), \

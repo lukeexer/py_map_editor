@@ -15,7 +15,7 @@ DEFAULT_NON_FOLLOW_POINT_COLOR = 'yellow'
 DEFAULT_PATH_COLOR = 'white'
 
 DEFAULT_POINT_RADIUS = 10
-DEFAULT_Path_WIDTH = 5
+DEFAULT_PATH_WIDTH = 5
 
 class MouseMode(Enum):
     '''Map editor selected mouse mode.'''
