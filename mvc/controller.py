@@ -6,6 +6,7 @@ import tkinter as tk
 from mvc.model.map import Map, Point, PointType
 from mvc.view.panel import EditorPanel
 from mvc.view.canvas import MapCanvas
+from mvc.view.dialog import PointSelectedDialog
 
 import mvc.constants as Const
 
@@ -57,6 +58,8 @@ class MapEditor(tk.Tk):
                     self._add_path_end_point_id = None
         elif self._panel_variables['current_mouse_mode'] == Const.MouseMode.SELECT.value:
             selected_tag_name = self._canvas.get_selected_tags()
+            dlg = PointSelectedDialog(parent=self, point_id=selected_tag_name)
+            print(dlg.dialog_return_value)
             print(f'Selected point tag name: {selected_tag_name}')
         elif self._panel_variables['current_mouse_mode'] == Const.MouseMode.DELETE.value:
             selected_object = self._canvas.get_selected_tags()
