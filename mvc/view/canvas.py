@@ -21,6 +21,9 @@ class MapCanvas(tk.Frame):
         self._canvas.bind("<Button-1>", callbacks['canvas_click'], add='+')
         self._canvas.bind("<Button-1>", self._scroll_start, add='+')
         self._canvas.bind("<B1-Motion>", self._scroll_move)
+        self._canvas.bind("<MouseWheel>", self._on_mousewheel) # For Windows OS
+        self._canvas.bind("<Button-4>", self._on_mousewheel) # For Linux OS
+        self._canvas.bind("<Button-5>", self._on_mousewheel) # For Linux OS
         self._canvas.pack()
 
         self._img = ImageTk.PhotoImage(Image.open("test.png"))
@@ -32,6 +35,9 @@ class MapCanvas(tk.Frame):
     def _scroll_move(self, event):
         '''Mouse click and drag event for moving the canvas.'''
         self._canvas.scan_dragto(event.x, event.y, gain=1)
+
+    def _on_mousewheel(self, event):
+        print('event.')
 
     def get_selected_tags(self):
         '''Get the current selected tag name.'''
