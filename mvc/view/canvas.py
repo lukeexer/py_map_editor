@@ -21,6 +21,7 @@ class MapCanvas(tk.Frame):
         self._canvas.bind("<Button-1>", callbacks['canvas_click'], add='+')
         self._canvas.bind("<Button-1>", self._scroll_start, add='+')
         self._canvas.bind("<B1-Motion>", self._scroll_move)
+        # Mouse wheel: https://www.daniweb.com/programming/software-development/code/217059/using-the-mouse-wheel-with-tkinter-python
         self._canvas.bind("<MouseWheel>", self._on_mousewheel) # For Windows OS
         self._canvas.bind("<Button-4>", self._on_mousewheel) # For Linux OS
         self._canvas.bind("<Button-5>", self._on_mousewheel) # For Linux OS
