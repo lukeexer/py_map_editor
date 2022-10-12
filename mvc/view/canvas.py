@@ -2,6 +2,8 @@
 
 import tkinter as tk
 
+from PIL import Image, ImageTk
+
 import mvc.constants as Const
 
 class MapCanvas(tk.Frame):
@@ -11,8 +13,25 @@ class MapCanvas(tk.Frame):
         super().__init__(parent, *args, **kwargs)
 
         self._canvas = tk.Canvas(self, width=width, height=height, bg='black')
-        self._canvas.bind("<Button-1>", callbacks['canvas_click'])
+        # scrollbar: https://stackoverflow.com/questions/20645532/move-a-tkinter-canvas-with-mouse
+        self._xsb = tk.Scrollbar(self, orient="horizontal", command=self._canvas.xview)
+        self._ysb = tk.Scrollbar(self, orient="vertical", command=self._canvas.yview)
+        self._canvas.configure(yscrollcommand=self._ysb.set, xscrollcommand=self._xsb.set)
+        self._canvas.configure(scrollregion=(0,0,1000,1000))
+        self._canvas.bind("<Button-1>", callbacks['canvas_click'], add='+')
+        self._canvas.bind("<Button-1>", self._scroll_start, add='+')
+        self._canvas.bind("<B1-Motion>", self._scroll_move)
         self._canvas.pack()
+
+        self._img = ImageTk.PhotoImage(Image.open("test.png"))
+
+    def _scroll_start(self, event):
+        '''Mouse click and drag event for moving the canvas.'''
+        self._canvas.scan_mark(event.x, event.y)
+
+    def _scroll_move(self, event):
+        '''Mouse click and drag event for moving the canvas.'''
+        self._canvas.scan_dragto(event.x, event.y, gain=1)
 
     def get_selected_tags(self):
         '''Get the current selected tag name.'''
@@ -22,6 +41,8 @@ class MapCanvas(tk.Frame):
         '''Update canvas content.'''
 
         self._canvas.delete("all")
+
+        self._canvas.create_image(0, 0, image=self._img)
 
         for path in map_data.paths:
             x_1 = path.start_point.x
